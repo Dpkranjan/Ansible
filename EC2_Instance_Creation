@@ -1,0 +1,25 @@
+name: Create web server EC2 instance
+     ec2:
+      aws_access_key: "{{ aws_access_key }}"
+      aws_secret_key: "{{ aws_secret_key }}"
+      region: "{{ aws_region }}"
+      state: present
+      count: 1
+      assign_public_ip: yes
+      group_id: "{{ web_sg_res.group_id }}"
+      image: "{{ ec2.web.ami_image }}"
+      instance_profile_name: no
+      instance_tags:z
+       Env: "{{ env }}"
+       Name: "{{ prefix }}-{{ env }}-web-01"
+      instance_type: "{{ ec2.web.type }}"
+      key_name: "{{ keyname }}"
+      private_ip: no
+      source_dest_check: true
+      tenancy: default
+      volumes: "{{ ec2.web.volumes }}"
+      vpc_subnet_id: "{{ vpc_res.subnets[0]['id'] }}"
+      wait: yes
+      zone: "{{ vpc_res.subnets[0]['az'] }}"
+     register: ec2_web_res
+     tags: ec2
